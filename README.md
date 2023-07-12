@@ -4,7 +4,5 @@
 
 Download de imagens do Ambiente SAP referente aos dados da tcode SE78.
 
-The are annotations about new features and 'new' ways to do something better. ~~I hope it.~~
-
-
+There are annotations about different ways to handle it, but I do not care because I did not have too much time to get it done.
 ## Item - ##
