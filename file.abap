@@ -1,53 +1,50 @@
 REPORT /yga/nascimento.
 
 
+TYPES:
+  tab_content TYPE STANDARD TABLE OF bapiconten,
+
+  BEGIN OF ty_graphic_table,
+    line TYPE x LENGTH 255,
+  END OF ty_graphic_table,
+  tab_graphic_table TYPE TABLE OF ty_graphic_table,
+
+  tab_graphic_names TYPE TABLE OF stxbitmaps-tdname.
+
 DATA:
-  l_bytecount   TYPE i,
-  l_tdbtype     LIKE stxbitmaps-tdbtype,
-  l_content     TYPE STANDARD TABLE OF bapiconten INITIAL SIZE 0,
+  bytecount     TYPE i,
+  tdbtype       TYPE stxbitmaps-tdbtype,
+  content       TYPE tab_content,
 
   graphic_size  TYPE i,
-  graphic_names TYPE TABLE OF stxbitmaps-tdname,
+  graphic_names TYPE tab_graphic_names,
 
   path          TYPE rlgrap-filename VALUE 'C:\Users\EdmilsonNascimentoJe\OneDrive - GFI\Images\',
-  l_btype       TYPE  tdbtype VALUE 'BMON'.
-
-DATA:
-  BEGIN OF graphic_table OCCURS 0,
-    line TYPE x LENGTH 255,
-  END OF graphic_table .
+  btype         TYPE tdbtype VALUE 'BMON', " Colorida: 'BCOL'
+  graphic_table TYPE tab_graphic_names.
 
 
 graphic_names = VALUE #(
-  ( 'EREDES_DORI_DA_PAULOPEREIRA' )
-  ( 'EREDES_DSAT_NUNOCARDOSO' )
-  ( 'EREDES_DSAN_AAP_PEDROTRINDADE' )
-  ( 'EREDES_DSAN_AAD_ANTONIOMIGUEL' )
-  ( 'EREDES_DSAN_AAM_EDITESILVA' )
-  ( 'EREDES_DSAS_AAL_NUNOFERREIRA' )
-  ( 'EREDES_DSAS_AAT_ANTONIOVAZ' )
-  ( 'EREDES_DSAS_AAA_LUISSILVA' )
-  ( 'EREDES_DGV_RICARDOMESSIAS' )
-  ( 'EREDES_DPD_TAS_SERGIOPINTO' )
+  ( 'ARROW1' )
+  ( 'REVENUE QUEBEC' )
 ).
 
 LOOP AT graphic_names INTO DATA(graphic_name) .
 
   CLEAR:
-    l_bytecount, l_content, graphic_size, graphic_table[] .
+    bytecount, content, graphic_size, graphic_table[] .
 
   CALL FUNCTION 'SAPSCRIPT_GET_GRAPHIC_BDS'
     EXPORTING
       i_object       = 'GRAPHICS'
-*     i_name         = 'RNATU_EREDES'
       i_name         = graphic_name
       i_id           = 'BMAP'
 *     i_btype        = 'BCOL'
-      i_btype        = l_btype
+      i_btype        = btype
     IMPORTING
-      e_bytecount    = l_bytecount
+      e_bytecount    = bytecount
     TABLES
-      content        = l_content
+      content        = content
     EXCEPTIONS
       not_found      = 1
       bds_get_failed = 2
@@ -58,11 +55,11 @@ LOOP AT graphic_names INTO DATA(graphic_name) .
     EXPORTING
       old_format               = 'BDS'
       new_format               = 'BMP'
-      bitmap_file_bytecount_in = l_bytecount
+      bitmap_file_bytecount_in = bytecount
     IMPORTING
       bitmap_file_bytecount    = graphic_size
     TABLES
-      bds_bitmap_file          = l_content
+      bds_bitmap_file          = content
       bitmap_file              = graphic_table
     EXCEPTIONS
       OTHERS                   = 1.
@@ -73,7 +70,6 @@ LOOP AT graphic_names INTO DATA(graphic_name) .
     EXPORTING
       bin_filesize            = graphic_size
       filename                = field_name
-*     filename                = 'C:\FirmaAsociado.bmp'
       filetype                = 'BIN'
     TABLES
       data_tab                = graphic_table
@@ -84,5 +80,11 @@ LOOP AT graphic_names INTO DATA(graphic_name) .
       no_batch                = 4
       unknown_error           = 5
       gui_refuse_filetransfer = 6.
+
+  IF ( sy-subrc NE 0 ) .
+    CONTINUE .
+  ENDIF .
+
+  wrihte:/ 'file ', field_name .
 
 ENDLOOP .
