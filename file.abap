@@ -1,4 +1,4 @@
-REPORT /yga/nascimento.
+REPORT y_get_image .
 
 
 TYPES:
