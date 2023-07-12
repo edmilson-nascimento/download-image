@@ -85,6 +85,6 @@ LOOP AT graphic_names INTO DATA(graphic_name) .
     CONTINUE .
   ENDIF .
 
-  wrihte:/ 'file ', field_name .
+  WRITE:/ 'file ', field_name .
 
 ENDLOOP .
