@@ -19,7 +19,7 @@ DATA:
   graphic_size  TYPE i,
   graphic_names TYPE tab_graphic_names,
 
-  path          TYPE rlgrap-filename VALUE 'C:\Users\EdmilsonNascimentoJe\OneDrive - GFI\Images\',
+  path          TYPE rlgrap-filename VALUE 'C:\Images\',
   btype         TYPE tdbtype VALUE 'BMON', " Colorida: 'BCOL'
   graphic_table TYPE tab_graphic_names.
 
