@@ -6,4 +6,4 @@ Download de imagens do Ambiente SAP referente aos dados da tcode SE78.
 
 There are annotations about different ways to handle it, but I do not care because I did not have too much time to get it done.
 
-## Item - ##
+## Item
