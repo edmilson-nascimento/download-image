@@ -63,6 +63,9 @@ LOOP AT graphic_names INTO DATA(graphic_name) .
       bitmap_file              = graphic_table
     EXCEPTIONS
       OTHERS                   = 1.
+  if ( sy-subrc ne 0 ) .
+    return .
+  endif .
 
   DATA(field_name) = CONV rlgrap-filename( |{ path }{ graphic_name }.bmp| ) .
 
